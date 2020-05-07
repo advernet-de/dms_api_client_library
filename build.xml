@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project name="client library" default="clean_dist" basedir=".">
+
+	<description>
+		build the client library subproject
+	</description>
+
+	<property name="src" value="src"/>
+	<property name="build.dir" value="build"/>
+	<property name="dist.dir" value="${basedir}"/>
+	<property name="gson.path" value="/usr/share/java/gson.jar"/>
+	<property name="jarfile" value="${dist.dir}/dms-api-client-library.jar"/>
+
+	<target name="init" description="initialization target">
+		<echo message="========== Build DMS API Client Library =========="/>
+		<tstamp/>
+		<mkdir dir="${build.dir}"/>
+		<mkdir dir="${dist.dir}"/>
+	</target>
+
+	<target name="props">
+		<propertyfile file="${basedir}/src/de/advernet/api/client/version.properties" comment="Version properties">
+			<entry key="BUILD" type="date" operation="=" value="now" pattern="yyyyMMdd_HHmm"/>
+		</propertyfile>
+	</target>
+
+	<target name="dist" depends="init,props">
+
+		<path id="classpath">
+			<pathelement location="${gson.path}"/>
+		</path>
+
+		<javac srcdir="${src}" destdir="${build.dir}" classpathref="classpath" debug="true"/>
+
+		<copy todir="${build.dir}">
+			<fileset dir="${src}">
+				<include name="**/*.properties"/>
+			</fileset>
+		</copy>
+
+		<jar jarfile="${jarfile}">
+			<fileset dir="${build.dir}">
+				<include name="**/*"/>
+                <exclude name="**/examples/**"/>
+			</fileset>
+			<fileset dir="${basedir}">
+				<include name="LICENSE"/>
+				<include name="README.md"/>
+			</fileset>
+            <manifest>
+                <attribute name="Class-Path" value="${gson.path}" />
+            </manifest>
+
+		</jar>
+
+	</target>
+
+	<target name="clean">
+		<delete includeemptydirs="true" verbose="true" quiet="true">
+			<fileset dir="${build.dir}"/>
+			<fileset file="${jarfile}"/>
+		</delete>
+	</target>
+
+	<target name="clean_dist" depends="clean,dist"/>
+
+</project>

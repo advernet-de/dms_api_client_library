@@ -1,0 +1,9 @@
+*.class
+*.jar
+build/
+.classpath
+.directory
+.project
+.settings
+doc/
+**/version.properties
