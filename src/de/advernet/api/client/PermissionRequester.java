@@ -21,13 +21,12 @@ import com.google.gson.GsonBuilder;
 /**
  * Werkzeug zum Abfragen von Berechtigungen
  * 
- * @author Gabriel Aleanakian, Advernet.de GmbH
+ * @author Advernet.de GmbH
  */
 
 public class PermissionRequester {
 
-	private final static String API = "/api/v1";
-	private final static String PERMISSIONSPATH = "/permissions";
+	private final static String PATH = "/permissions";
 
 	private String urlString;
 	private String token;
@@ -41,10 +40,10 @@ public class PermissionRequester {
 	 * 
 	 * @throws IOException
 	 */
-	public void getPermissions() throws IOException {
+	public void loadPermissions() throws IOException {
 
 		HttpURLConnection httpConnection;
-		URL url = new URL(urlString + API + PERMISSIONSPATH);
+		URL url = new URL(urlString + CommonClientUtils.getAPI() + PATH);
 
 		httpConnection = (HttpURLConnection) url.openConnection();
 

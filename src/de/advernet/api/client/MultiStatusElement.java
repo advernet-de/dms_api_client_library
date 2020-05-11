@@ -9,7 +9,7 @@ package de.advernet.api.client;
 /**
  * Einzelergebnis aus Upload
  * 
- * @author Gabriel Aleanakian, Advernet.de GmbH
+ * @author Advernet.de GmbH
  */
 
 public class MultiStatusElement {

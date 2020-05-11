@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * Liste von hochzuladenden Dokumenten
  * 
- * @author Gabriel Aleanakian, Advernet.de GmbH
+ * @author Advernet.de GmbH
  */
 
 public class DocumentList {

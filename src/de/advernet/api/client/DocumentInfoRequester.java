@@ -10,9 +10,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -23,95 +20,58 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 /**
- * Werkzeug zum Hochladen von Dokumenten
+ * Werkzeug zum Abfragen von Metainformationen
  * 
  * @author Advernet.de GmbH
  */
 
-public class DocumentUploader {
+public class DocumentInfoRequester {
 
-	private final static String PATH_PATTERN = "/teams/<team>/boxes/Eingang/documents";
+	private final static String PATH_PATTERN = "/teams/<team>/boxes/<box>/documents/<document_no>/info";
 
 	private String urlString;
 	private String team;
+	private String box;
+	private String documentNo;
 	private String token;
 
-	private MultiStatus multiStatus;
+	private DocumentInfoList documentInfoList;
 	private ErrorResponse errorResponse;
 
 	/**
-	 * Dokumente hochladen
+	 * Metainformationen abfragen
 	 * 
-	 * @param docs Liste mit Dokumenten
 	 * @throws IOException
 	 */
-	public void uploadDocumentList(DocumentList docs) throws IOException {
+	public void loadDocumentInfo() throws IOException {
 
-		if (team==null) {
+		if (team==null || box==null || documentNo==null) {
 			throw new IllegalArgumentException();
 		}
-
+		
 		HttpURLConnection httpConnection = null;
 		URL url = new URL(urlString + CommonClientUtils.getAPI() + PATH_PATTERN
 				.replaceAll("<team>", URLEncoder.encode(team,"UTF-8").replaceAll("\\+", "%20"))
+				.replaceAll("<box>", URLEncoder.encode(box,"UTF-8").replaceAll("\\+", "%20"))
+				.replaceAll("<document_no>", URLEncoder.encode(documentNo,"UTF-8").replaceAll("\\+", "%20"))
 				);
-		OutputStream os = null;
-		PrintWriter writer = null;
 
-		boolean success = false;
-		String boundary = null;
+		httpConnection = (HttpURLConnection) url.openConnection();
 
-		while (!success) {
+		httpConnection.setDoOutput(true);
+		httpConnection.setInstanceFollowRedirects(false);
+		httpConnection.setRequestMethod("GET");
 
-			httpConnection = (HttpURLConnection) url.openConnection();
-			httpConnection.setDoOutput(true);
-			httpConnection.setInstanceFollowRedirects(false);
-			httpConnection.setRequestMethod("POST");
-			boundary = CommonClientUtils.getBoundary();
-			httpConnection.setRequestProperty("Content-Type", "multipart/form-data; boundary="+boundary);
-			httpConnection.setRequestProperty("Authorization", "bearer " + token);
-			httpConnection.setUseCaches(false);
-
-			os = httpConnection.getOutputStream();
-			writer = new PrintWriter(new OutputStreamWriter(os,"UTF-8"),true);
-
-			boolean boundaryFound = false;
-
-			for (DocumentListElement document : docs.getElements()) {
-				byte[] data = document.getData();
-				String dataAsString = new String(data,"UTF-8");
-				if (!dataAsString.contains(boundary)) {
-					String filename = document.getFilename();
-					if (!filename.endsWith(".pdf")) filename = filename + ".pdf";
-					CommonClientUtils.addFilePartHeader(writer,"file",filename,boundary);
-					os.write(data);
-					os.flush();
-					writer.append("\r\n");
-					writer.flush();
-				} else {
-					boundaryFound = true;
-					break;
-				}
-			}
-
-			if (boundaryFound) continue;
-
-			success = true;
-
-		}
-
-		writer.append("--").append(boundary).append("--").append("\r\n");
-		writer.flush();
-		writer.close();
-
-		os.close();
+		httpConnection.setRequestProperty("Authorization", "bearer " + token);
+		httpConnection.setUseCaches(false);
 
 		int status = httpConnection.getResponseCode();
+
 		InputStream stream;
 		String info = null;
 		try {
 			stream = httpConnection.getInputStream();
-		} catch (Exception e) {
+		} catch (IOException e) {
 			stream = httpConnection.getErrorStream();
 		}
 
@@ -123,8 +83,8 @@ public class DocumentUploader {
 
 		if (info!=null) {
 			Gson gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create();
-			if (status==207) {
-				setMultiStatus(gson.fromJson(info, MultiStatus.class));
+			if (status==200) {
+				setDocumentInfoList(gson.fromJson(info, DocumentInfoList.class));
 			} else {
 				setErrorResponse(gson.fromJson(info, ErrorResponse.class));
 			}
@@ -155,7 +115,7 @@ public class DocumentUploader {
 	/**
 	 * Gibt das Team des DMS zurück
 	 * 
-	 * @return Team in das Dokumente hochgeladen werden sollen
+	 * @return Team des DMS
 	 */
 	public String getTeam() {
 		return team;
@@ -164,11 +124,47 @@ public class DocumentUploader {
 	/**
 	 * Setzt das Team im DMS
 	 * 
-	 * @param team Team in das Dokumente hochgeladen werden sollen
+	 * @param team Team im DMS
 	 */
 	public void setTeam(String team) {
 		this.team = team;
 	}
+	
+	/**
+	 * Gibt das Ablagefach zurück
+	 * 
+	 * @return Ablagefach
+	 */
+	public String getBox() {
+		return box;
+	}
+
+	/**
+	 * Setzt das Ablagefach
+	 * 
+	 * @param box Ablagefach
+	 */
+	public void setBox(String box) {
+		this.box = box;
+	}
+
+	/**
+	 * Gibt die Dokumentennummer zurück
+	 * 
+	 * @return Dokumentennummer
+	 */
+	public String getDocumentNo() {
+		return documentNo;
+	}
+
+	/**
+	 * Setzt die Dokumentennummer
+	 * 
+	 * @param documentNo Dokumentennummer
+	 */
+	public void setDocumentNo(String documentNo) {
+		this.documentNo = documentNo;
+	}	
 
 	/**
 	 * Gibt das Access Token zurück
@@ -189,21 +185,21 @@ public class DocumentUploader {
 	}
 
 	/**
-	 * Gibt Liste mit Ergebnissen des Uploads zurück
+	 * Gibt die Liste mit Metainformationen zurück
 	 * 
-	 * @return Liste mit Ergebnissen des Uploads
+	 * @return Liste mit Metainformationen
 	 */
-	public MultiStatus getMultiStatus() {
-		return multiStatus;
+	public DocumentInfoList getDocumentInfoList() {
+		return documentInfoList;
 	}
 
 	/**
-	 * Setzt Liste mit Ergebnissen des Uploads
+	 * Setzt die Liste mit Metainformationen
 	 * 
-	 * @param multiStatus Liste mit Ergebnissen des Uploads
+	 * @param documentInfoList Liste mit Metainformationen
 	 */
-	public void setMultiStatus(MultiStatus multiStatus) {
-		this.multiStatus = multiStatus;
+	public void setDocumentInfoList(DocumentInfoList documentInfoList) {
+		this.documentInfoList = documentInfoList;
 	}
 
 	/**

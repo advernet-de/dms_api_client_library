@@ -27,7 +27,7 @@ public class PermissionRequestExample {
 
 		scanner.close();
 
-		requester.getPermissions();
+		requester.loadPermissions();
 
 		if (requester.getPermissionMap()!=null) {
 			for (String key : requester.getPermissionMap().getPermissions().keySet()) {

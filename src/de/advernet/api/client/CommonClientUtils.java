@@ -12,12 +12,13 @@ import java.util.Random;
 /**
  * Utilities
  * 
- * @author Gabriel Aleanakian, Advernet.de GmbH
+ * @author Advernet.de GmbH
  */
 
 public class CommonClientUtils {
 
-
+	private final static String API = "/api/v1";
+	
 	/**
 	 * Form-Field hinzufügen
 	 * 
@@ -64,6 +65,15 @@ public class CommonClientUtils {
 			boundary=boundary+boundaryChars.charAt(random.nextInt(boundaryChars.length()));
 		}
 		return boundary;
+	}
+
+	/**
+	 * Gibt den Pfad zur API zurück
+	 * 
+	 * @return Pfad zur API
+	 */
+	public static String getAPI() {
+		return API;
 	}
 
 }

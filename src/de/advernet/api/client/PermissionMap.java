@@ -12,7 +12,7 @@ import java.util.Map;
 /**
  * Datenstruktur mit Berechtigungen
  * 
- * @author Gabriel Aleanakian, Advernet.de GmbH
+ * @author Advernet.de GmbH
  */
 
 public class PermissionMap {

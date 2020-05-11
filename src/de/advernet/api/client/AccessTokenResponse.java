@@ -9,7 +9,7 @@ package de.advernet.api.client;
 /**
  * Response auf Access Token Request
  * 
- * @author Gabriel Aleanakian, Advernet.de GmbH
+ * @author Advernet.de GmbH
  */
 
 public class AccessTokenResponse {

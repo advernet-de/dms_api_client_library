@@ -9,9 +9,9 @@ package de.advernet.api.client;
 import java.util.List;
 
 /**
- * Ergebisliste aus Upload
+ * Ergebnisliste aus Upload
  * 
- * @author Gabriel Aleanakian, Advernet.de GmbH
+ * @author Advernet.de GmbH
  */
 
 public class MultiStatus {

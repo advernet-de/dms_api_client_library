@@ -26,12 +26,11 @@ import com.google.gson.reflect.TypeToken;
 /**
  * Werkzeug zum Abfragen von Access Tokens
  * 
- * @author Gabriel Aleanakian, Advernet.de GmbH
+ * @author Advernet.de GmbH
  */
 public class AccessTokenRequester {
 
-	private final static String API = "/api/v1/";
-	private final static String PATH = "/oauth2/token/";
+	private final static String PATH = "/oauth2/token";
 	private final static String GRANT_TYPE = "client_credentials";
 
 	private String urlString;
@@ -48,7 +47,7 @@ public class AccessTokenRequester {
 
 		AccessTokenResponse token = new AccessTokenResponse();
 		String boundary = CommonClientUtils.getBoundary();
-		URL url = new URL(getUrlString() + API + PATH);
+		URL url = new URL(getUrlString() + CommonClientUtils.getAPI() + PATH);
 		HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 		conn.setDoOutput(true);
 		conn.setInstanceFollowRedirects(false);

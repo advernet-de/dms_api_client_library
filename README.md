@@ -7,7 +7,8 @@ zum Zugriff auf die REST-API einer Instanz des *Advernet.de DMS*.
 und kann unter den Bedingungen der *MIT License* genutzt werden.
 
 Die Library ist in Entwicklung und implementiert in der jetzigen
-Version eine Untermenge der API-Funktionen.
+Version eine Untermenge der API-Funktionen. Bis zum vollständigen 
+Release 1.0 kann sich die Schnittstelle jederzeit ohne Ankündigung ändern.
 
 ## Build
 
@@ -38,6 +39,14 @@ java -cp dms-api-client-library.jar:build de.advernet.api.client.examples.Permis
 
 ~~~
 java -cp dms-api-client-library.jar:build de.advernet.api.client.examples.DocumentUploadExample
+~~~
+
+~~~
+java -cp dms-api-client-library.jar:build de.advernet.api.client.examples.DocumentInfoRequestExample
+~~~
+
+~~~
+java -cp dms-api-client-library.jar:build de.advernet.api.client.examples.DocumentSearchExample
 ~~~
 
 ## API-Referenz
