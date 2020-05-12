@@ -27,26 +27,36 @@ angegeben werden.
 
 ## Beispiele
 
-Starten Sie aus dem Repository-Verzeichnis einen der folgenden Befehle:
+Starten Sie aus dem Repository-Verzeichnis das Beispiel zu der gewünschten Funktion.
 
+### Access Token abrufen
 ~~~
 java -cp dms-api-client-library.jar:build de.advernet.api.client.examples.AccessTokenRequestExample
 ~~~
 
+### Eigene Berechtigungen abfragen
 ~~~
 java -cp dms-api-client-library.jar:build de.advernet.api.client.examples.PermissionRequestExample
 ~~~
 
+### Dokumente hochladen
 ~~~
 java -cp dms-api-client-library.jar:build de.advernet.api.client.examples.DocumentUploadExample
 ~~~
 
+### Metadaten abfragen
 ~~~
 java -cp dms-api-client-library.jar:build de.advernet.api.client.examples.DocumentInfoRequestExample
 ~~~
 
+### Dokumentensuche
 ~~~
 java -cp dms-api-client-library.jar:build de.advernet.api.client.examples.DocumentSearchExample
+~~~
+
+### Metadaten ändern
+~~~
+java -cp dms-api-client-library.jar:build de.advernet.api.client.examples.DocumentInfoUpdateExample
 ~~~
 
 ## API-Referenz

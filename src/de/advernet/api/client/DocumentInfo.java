@@ -6,7 +6,6 @@ Copyright (C) Advernet.de GmbH
 
 package de.advernet.api.client;
 
-import java.util.Date;
 import java.util.List;
 
 /**
@@ -19,7 +18,7 @@ public class DocumentInfo {
 
 	private int documentNo;
 	private String documentType;
-	private Date documentDate;
+	private String documentDate;
 	private List<String> documentTags;
 	private String documentStampText;
 	private String documentStampColor;
@@ -71,7 +70,7 @@ public class DocumentInfo {
 	 * 
 	 * @return Dokumentendatum
 	 */
-	public Date getDocumentDate() {
+	public String getDocumentDate() {
 		return documentDate;
 	}
 	
@@ -80,7 +79,7 @@ public class DocumentInfo {
 	 * 
 	 * @param documentDate Dokumentendatum
 	 */
-	public void setDocumentDate(Date documentDate) {
+	public void setDocumentDate(String documentDate) {
 		this.documentDate = documentDate;
 	}
 	

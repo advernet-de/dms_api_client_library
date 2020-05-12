@@ -36,7 +36,7 @@ public class DocumentSearcher {
 	private String box;
 	private String token;
 
-	private String date;	
+	private String date;
 	private String dateFrom;
 	private String dateTo;
 	private String documentType;

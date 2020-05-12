@@ -36,4 +36,13 @@ public class DocumentInfoList {
 		this.documents = documents;
 	}
 	
+	/**
+	 * Fügt Metadaten zu einem Dokument hinzu
+	 * 
+	 * @param documentInfo Metadaten zu einem Dokument
+	 */
+	public void addDocumentInfo(DocumentInfo documentInfo) {
+		getDocuments().add(documentInfo);
+	}
+
 }
